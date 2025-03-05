@@ -1,24 +1,13 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import {
-  createUser,
-  deleteUserById,
-  getUserById,
-  getUsers,
-} from "@/http/controllers/user.controller";
 
-import {
-  createUserDoc,
-  getUsersDoc,
-  getUserByIdDoc,
-  deleteUserByIdDoc,
-} from "./user.docs";
+import { createUserDoc, loginUserDoc } from "./user.docs";
+
+import UserController from "@/modules/user/user.controller";
+// import authenticationMiddleware from "@/utils/middlewares/authMiddleware";
 
 export const userRoutes: FastifyPluginAsyncZod = async (app) => {
-  app.post("/users", createUserDoc, createUser);
+  // app.addHook("onRequest", authenticationMiddleware);
 
-  app.get("/users", getUsersDoc, getUsers);
-
-  app.get("/users/:id", getUserByIdDoc, getUserById);
-
-  app.delete("/users/:id", deleteUserByIdDoc, deleteUserById);
+  app.post("/register", createUserDoc, UserController.create);
+  app.post("/login", loginUserDoc, UserController.login);
 };

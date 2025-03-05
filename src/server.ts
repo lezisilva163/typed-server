@@ -38,7 +38,7 @@ app.register(fastifySwaggerUi, {
   },
 });
 
-app.register(routes, { prefix: "/api/v1" });
+app.register(routes);
 
 app.listen({ port: env.PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {

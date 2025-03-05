@@ -14,8 +14,50 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(uuid())
-  name String
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
 
   @@map("users")
+}
+
+// Tabela de empresas
+model Company {
+  id                 String @id @default(uuid())
+  name               String
+  cpf                String
+  cnpj               String
+  address            String
+  city               String
+  state              String
+  country            String
+  phone              String
+  email              String
+  inscricaoEstadual  String
+  inscricaoMunicipal String
+
+  contadorId Int        @map("contador_id")
+  contador   Accountant @relation(fields: [contadorId], references: [id])
+
+  @@map("companies")
+}
+
+// Tabela de contadores
+model Accountant {
+  id      Int    @id @default(autoincrement())
+  name    String
+  cpf     String
+  cnpj    String
+  address String
+  city    String
+  state   String
+  country String
+  phone   String
+  email   String
+  crc     String
+
+  companies Company[]
+
+  @@map("accountants")
 }

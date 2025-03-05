@@ -9,11 +9,11 @@
     "schemas": {}
   },
   "paths": {
-    "/api/v1/users": {
+    "/register": {
       "post": {
         "operationId": "createUser",
         "tags": [
-          "users"
+          "authentications"
         ],
         "description": "Create a new user",
         "requestBody": {
@@ -24,10 +24,20 @@
                 "properties": {
                   "name": {
                     "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6
                   }
                 },
                 "required": [
-                  "name"
+                  "name",
+                  "email",
+                  "password"
                 ],
                 "additionalProperties": false
               }
@@ -48,48 +58,40 @@
                     },
                     "name": {
                       "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
                     }
                   },
                   "required": [
                     "id",
-                    "name"
+                    "name",
+                    "email",
+                    "password"
                   ],
                   "additionalProperties": false
                 }
               }
             }
-          }
-        }
-      },
-      "get": {
-        "operationId": "getUsers",
-        "tags": [
-          "users"
-        ],
-        "description": "Get all users",
-        "responses": {
-          "200": {
+          },
+          "500": {
             "description": "Default Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "id",
-                      "name"
-                    ],
-                    "additionalProperties": false
-                  }
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false
                 }
               }
             }
@@ -97,43 +99,45 @@
         }
       }
     },
-    "/api/v1/users/{id}": {
-      "get": {
-        "operationId": "getUserById",
+    "/login": {
+      "post": {
+        "operationId": "loginUser",
         "tags": [
-          "users"
+          "authentications"
         ],
-        "description": "Get user by id",
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
+        "description": "Login user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Default Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name"
-                  ],
-                  "additionalProperties": false
+                  "type": "string"
                 }
               }
             }
@@ -156,46 +160,8 @@
                 }
               }
             }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "deleteUserById",
-        "tags": [
-          "users"
-        ],
-        "description": "Delete user by id",
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Default Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "message"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
           },
-          "404": {
+          "500": {
             "description": "Default Response",
             "content": {
               "application/json": {
